@@ -185,7 +185,7 @@ df_geral_metadados <- df_matematica %>%
 # Filtros por nome do programa e linha de pesquisa
 # ------------------------------------------------------------
 # Seleciona as produções que apresentam programas ou linhas de pesquisa
-# com o termo "matemática" e "ensino ou educação"
+# com o termo matemática e ensino ou educação
 
 palavra_chave <- "matemática"
 
@@ -197,7 +197,7 @@ df_matematica_foco <- df_amazonia %>%
 
 palavras_chave <- c("educação", "ensino")
 
-df_matematica_educacao_foco <- df_matematica_foco %>%
+df_programas <- df_matematica_foco %>%
   filter(
     str_detect(NM_PROGRAMA, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
       str_detect(NM_LINHA_PESQUISA, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE))
@@ -207,7 +207,7 @@ df_matematica_educacao_foco <- df_matematica_foco %>%
 # Filtros por Título, Resumo e Palavras-chave
 # ------------------------------------------------------------
 # Seleciona as produções que apresentam em seu título, resumo ou palavrs-chave
-# o termo "matemática" e "ensino ou educação
+# o termo "matemática" e "ensino ou educação"
 
 palavra_chave <- "matemática"
 
@@ -220,7 +220,7 @@ df_matematica_texto <- df_amazonia %>%
 
 palavras_chave <- c("educação", "ensino")
 
-df_matematica_educacao_texto <- df_matematica_texto %>%
+df_T_R_PC <- df_matematica_texto %>%
   filter(
     str_detect(NM_PRODUCAO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
       str_detect(DS_RESUMO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
@@ -235,7 +235,7 @@ df_matematica_educacao_texto <- df_matematica_texto %>%
 
 palavras_chave <- c("educação matemática", "ensino de matemática", "ensino da matemática")
 
-df_matematica_educacao_enisno_matemática <- df_amazonia %>%
+df_bigramas_relacionados <- df_amazonia %>%
   filter(
     str_detect(NM_PRODUCAO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
       str_detect(DS_RESUMO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
