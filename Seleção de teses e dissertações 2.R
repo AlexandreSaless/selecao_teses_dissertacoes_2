@@ -9,6 +9,8 @@
 ## Observação: recomenda-se ao menos 12 GB de RAM devido ao volume dos dados
 ########################
 
+# Definir o diretório de trabalho
+
 # Carregando pacotes necessários
 library(tidyverse)
 library(readxl)
@@ -152,6 +154,7 @@ write.csv2(df, "C:/Users/alexa/OneDrive/Área de Trabalho/df.csv")
 # ------------------------------------------------------------
 # Filtro por região da Amazônia Legal
 # ------------------------------------------------------------
+# Seleciona teses e dissertações produzidas na Amazônia Legal
 
 # Siglas dos estados da Amazônia Legal
 estados_amazonia_legal <- c("AC", "AP", "AM", "MA", "MT", "PA", "RO", "RR", "TO")
@@ -163,6 +166,8 @@ df_amazonia <- df %>%
 # ------------------------------------------------------------
 # Exemplos de Filtros Temáticos
 # ------------------------------------------------------------
+# Seleciona as produções que apresentam em qualquer variável de seus
+# metadados o termo "matemática" e "ensino ou educação"
 
 # Filtro geral por palavra-chave em qualquer campo
 palavra_chave <- "matemática"
@@ -171,14 +176,16 @@ df_matematica <- df_amazonia %>%
   filter(if_any(everything(), ~ str_detect(., regex(palavra_chave, ignore_case = TRUE))))
 
 # Busca por várias palavras-chave
-palavras_chave_2 <- c("educação", "ensino")
+palavras_chave <- c("educação", "ensino")
 
-df_educacao_ensino <- df_matematica %>%
-  filter(if_any(everything(), ~ str_detect(., regex(str_c(palavras_chave_2, collapse = "|"), ignore_case = TRUE))))
+df_geral_metadados <- df_matematica %>%
+  filter(if_any(everything(), ~ str_detect(., regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE))))
 
 # ------------------------------------------------------------
 # Filtros por nome do programa e linha de pesquisa
 # ------------------------------------------------------------
+# Seleciona as produções que apresentam programas ou linhas de pesquisa
+# com o termo "matemática" e "ensino ou educação"
 
 palavra_chave <- "matemática"
 
@@ -199,6 +206,8 @@ df_matematica_educacao_foco <- df_matematica_foco %>%
 # ------------------------------------------------------------
 # Filtros por Título, Resumo e Palavras-chave
 # ------------------------------------------------------------
+# Seleciona as produções que apresentam em seu título, resumo ou palavrs-chave
+# o termo "matemática" e "ensino ou educação
 
 palavra_chave <- "matemática"
 
@@ -212,6 +221,21 @@ df_matematica_texto <- df_amazonia %>%
 palavras_chave <- c("educação", "ensino")
 
 df_matematica_educacao_texto <- df_matematica_texto %>%
+  filter(
+    str_detect(NM_PRODUCAO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
+      str_detect(DS_RESUMO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
+      str_detect(DS_PALAVRA_CHAVE, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE))
+  )
+
+# ------------------------------------------------------------
+# Filtros por Título, Resumo e Palavras-chave
+# ------------------------------------------------------------
+# Seleciona as produções que apresentam em seu título, resumo ou palavrs-chave
+# o termo "educação matemática", "ensino de matemática", "ensino da matemática"
+
+palavras_chave <- c("educação matemática", "ensino de matemática", "ensino da matemática")
+
+df_matematica_educacao_enisno_matemática <- df_amazonia %>%
   filter(
     str_detect(NM_PRODUCAO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
       str_detect(DS_RESUMO, regex(str_c(palavras_chave, collapse = "|"), ignore_case = TRUE)) |
